@@ -1,31 +1,45 @@
 import React, { Component } from 'react'
+import {ipcRenderer} from 'electron'
 
+ ipcRenderer.on('add-course',(event, arg)=>{
+        console.log("event,arg",arg)
+})
 export default class CreateCourse extends Component {
   componentWillMount () {
     this.setState({
       name: '',
       startdate: '',
-      duration: '',
+      duration: null,
       nameClass: 'inputText',
       dateClass: 'inputText',
       durationClass: 'inputText'
     })
   }
+  sendData(){
+    let obj = {
+        name : this.state.name,
+        duration : this.state.duration,
+        startDate : this.state.startdate
+    }
+    ipcRenderer.send('add-course',obj)
+  }
+   
   handleSubmit () {
-    if (this.state.name === '' || this.state.startdate === '' || this.state.duration === '') {
+    if (this.state.name === '' || this.state.startdate === '' || this.state.duration === null || this.state.duration <= 0 ) {
       if (this.state.name === '') {
         this.setState({nameClass: 'inputText errorInput'})
       }
       if (this.state.startdate === '') {
         this.setState({dateClass: 'inputText errorInput'})
       }
-      if (this.state.duration === '') {
+      if (this.state.duration === null || this.state.duration <= 0 ) {
         this.setState({durationClass: 'inputText errorInput'})
       }
     }else {
-      console.log(this.state)
+      this.sendData()
     }
   }
+
   render () {
     return (<div className='container'>
               <h1>Start Course</h1>
@@ -43,7 +57,7 @@ export default class CreateCourse extends Component {
                 </div>
                 <div className='formField'>
                   <span className='formLabel'>Duration</span>
-                  <input type='text' className={this.state.durationClass} onChange={e => this.setState({duration: e.target.value.trim(), durationClass: 'inputText'})} />
+                  <input type='number' min="1" className={this.state.durationClass} onChange={e => this.setState({duration: Number(e.target.value), durationClass: 'inputText'})} />
                 </div>
                 <button className='submitButton buttons' onClick={this.handleSubmit.bind(this)}>
                   Submit
