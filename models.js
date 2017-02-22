@@ -6,10 +6,11 @@ let database
 const init = function(uri, cb){
     connect(uri).then(function(db){
 	database = db
-	if(cb !==  undefined){
-	    console.log("Connected to database")
-	    cb()
-	}
+	console.log("Connected to database")
+	cb()
+    }, function(err){
+	console.log("Connection to database failed")
+	cb(err)
     })
 }
 

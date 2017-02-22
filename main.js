@@ -23,9 +23,16 @@ const createWindow = function() {
 }
 
 app.on('ready', function(){
-    per.init(function(){
-	console.log("creating window")
-	createWindow()
+    per.init(function(err){
+	if(err){
+	    console.log("Error initializing persistance..")
+	    console.log(err)
+	    console.log("Terminating the main process")
+	    app.quit()
+	}else{
+	    console.log("creating BrowserWindow")
+	    createWindow()
+	}
     })
 })
 
@@ -34,13 +41,21 @@ app.on('window-all-closed', () => {
 })
 
 const addCourse = function(event, arg){
-    per.saveCourse(arg, function(id){
+    per.saveCourse(arg, function(err, id){
+	if(err){
+	    console.log("Failed to save course")
+	    console.log(err)
+	}
 	event.sender.send('add-course', id)
     })
 }
 
 const getCourse = function(event, arg){
-    per.getCourse({_id:arg}, function(doc){
+    per.getCourse({_id:arg}, function(err, doc){
+	if (err){
+	    console.log("Failed to get course")
+	    console.log(err)
+	}
 	event.sender.send('get-course', doc)
     })
 }
