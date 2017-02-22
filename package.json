@@ -4,6 +4,7 @@
   "description": "Laundry app for Vipassana centres (on Electron)",
   "main": "main.js",
   "scripts": {
+    "webpack": "webpack",
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

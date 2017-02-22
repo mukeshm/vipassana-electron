@@ -30,6 +30,8 @@ html, body{
     font-size: 25px;
     background-color: #3498db;
     border: solid #3498db;
+      cursor:pointer;
+
 
 }
 .buttons:hover{
