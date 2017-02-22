@@ -1,6 +1,7 @@
 const {app, BrowserWindow} = require('electron')
 const path = require('path')
 const url = require('url')
+const per = require('./persistance')
 
 let win
 
@@ -17,9 +18,17 @@ function createWindow () {
   win.on('closed', () => {
     win = null
   })
+
+    console.log("BrowserWindow created")
+    
 }
 
-app.on('ready', createWindow)
+app.on('ready', function(){
+    per.init(function(){
+	console.log("creating window")
+	createWindow()
+    })
+})
 
 app.on('window-all-closed', () => {
     app.quit()
