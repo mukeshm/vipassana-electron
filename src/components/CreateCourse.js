@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {ipcRenderer} from 'electron'
+import {hashHistory} from 'react-router'
 
  ipcRenderer.on('add-course',(event, arg)=>{
         console.log("event,arg",arg)
@@ -12,7 +13,8 @@ export default class CreateCourse extends Component {
       duration: null,
       nameClass: 'inputText',
       dateClass: 'inputText',
-      durationClass: 'inputText'
+      durationClass: 'inputText',
+      submitted : false
     })
   }
   sendData(){
@@ -22,6 +24,9 @@ export default class CreateCourse extends Component {
         startDate : this.state.startdate
     }
     ipcRenderer.send('add-course',obj)
+    this.setState({
+        submitted : true
+    })
   }
    
   handleSubmit () {
@@ -40,10 +45,19 @@ export default class CreateCourse extends Component {
     }
   }
 
-  render () {
-    return (<div className='container'>
-              <h1>Start Course</h1>
-              <div className='createCourseForm'>
+  renderLoading(){
+      return(
+          <div className="loaderWrapper">
+              <div className="loader"></div>
+
+              </div>
+      )
+  }
+
+  renderForm(){
+      return(<div className='createCourseForm'>
+            <h1>Start Course</h1>
+              <div>
                 <div className='formField'>
                   <span className='formLabel'>Course Name</span>
                   <input
@@ -63,6 +77,16 @@ export default class CreateCourse extends Component {
                   Submit
                 </button>
               </div>
+              </div>
+      )
+  }
+
+  render () {
+    return (<div className='container'>
+            <div className="header">
+                <button className="buttons nav-buttons" onClick={() => hashHistory.push('/')} >Home </button>
+            </div>
+            {this.state.submitted ? this.renderLoading() : this.renderForm()}
             </div>)
   }
 }
