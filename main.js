@@ -1,27 +1,49 @@
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, ipcMain} = require('electron')
 const path = require('path')
 const url = require('url')
+const per = require('./persistance')
 
 let win
 
-function createWindow () {
-  
-  win = new BrowserWindow({width: 1024, height: 768})
+const createWindow = function() {
 
-  win.loadURL(url.format({
-    pathname: path.join(__dirname, 'src/index.html'),
-    protocol: 'file:',
-    slashes: true
-  }))
+    win = new BrowserWindow({width: 1024, height: 768})
 
-  win.on('closed', () => {
-    win = null
-  })
+    win.loadURL(url.format({
+      pathname: path.join(__dirname, 'src/index.html'),
+      protocol: 'file:',
+      slashes: true
+    }))
+
+    win.on('closed', () => {
+	win = null
+    })
+
+    console.log("BrowserWindow created")
 }
 
-app.on('ready', createWindow)
+app.on('ready', function(){
+    per.init(function(){
+	console.log("creating window")
+	createWindow()
+    })
+})
 
 app.on('window-all-closed', () => {
     app.quit()
 })
 
+const addCourse = function(event, arg){
+    per.saveCourse(arg, function(id){
+	event.sender.send('add-course', id)
+    })
+}
+
+const getCourse = function(event, arg){
+    per.getCourse({_id:arg}, function(doc){
+	event.sender.send('get-course', doc)
+    })
+}
+
+ipcMain.on('add-course', addCourse)
+ipcMain.on('get-course', getCourse)
