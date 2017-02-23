@@ -60,5 +60,17 @@ const getCourse = function(event, arg){
     })
 }
 
+const getCourses = function(event, arg){
+    per.getCourses({}, function(err, docs){
+	if (err){
+	    console.log("Failed to get course")
+	    console.log(err)
+	}
+	event.sender.send('get-courses', docs)
+    })
+}
+
+
 ipcMain.on('add-course', addCourse)
 ipcMain.on('get-course', getCourse)
+ipcMain.on('get-courses', getCourses)
