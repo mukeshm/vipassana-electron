@@ -10,7 +10,7 @@ export default class CreateCourse extends Component {
     this.setState({
       name: '',
       startdate: '',
-      duration: null,
+      duration: 0,
       nameClass: 'inputText',
       dateClass: 'inputText',
       durationClass: 'inputText',
@@ -29,18 +29,36 @@ export default class CreateCourse extends Component {
     })
   }
 
-  handleSubmit () {
-    if (this.state.name === '' || this.state.startdate === '' || this.state.duration === null || this.state.duration <= 0) {
-      if (this.state.name === '') {
+  isNameValid(name){
+     if (name === '') {
         this.setState({nameClass: 'inputText errorInput'})
+        return false
       }
-      if (this.state.startdate === '') {
+    return true
+  }
+
+  isDateValid(date){
+    if (date === '') {
         this.setState({dateClass: 'inputText errorInput'})
+        return false
       }
-      if (this.state.duration === null || this.state.duration <= 0) {
+    return true
+  }
+  
+  isDurationValid(duration){
+       if (duration <= 0) {
         this.setState({durationClass: 'inputText errorInput'})
+        return false
       }
-    }else {
+      return true
+  }
+  
+  
+  handleSubmit () {
+    let nameValidation = this.isNameValid(this.state.name)
+    let dateValidation = this.isDateValid(this.state.startdate)
+    let durationValidation = this.isDurationValid(this.state.duration)
+    if ( nameValidation && dateValidation && durationValidation) {
       this.sendData()
     }
   }
