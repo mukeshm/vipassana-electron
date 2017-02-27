@@ -4,6 +4,7 @@ import { hashHistory } from 'react-router'
 
 ipcRenderer.on('add-course', (event, arg) => {
   console.log('event,arg', arg)
+  hashHistory.push(`/showcourse/${arg}`)
 })
 export default class CreateCourse extends Component {
   componentWillMount () {
@@ -30,7 +31,7 @@ export default class CreateCourse extends Component {
   }
 
   isNameValid(name){
-     if (name === '') {
+     if (name === '' || name.length >25 ) {
         this.setState({nameClass: 'inputText errorInput'})
         return false
       }
@@ -83,6 +84,7 @@ export default class CreateCourse extends Component {
                 <div className='formField'>
                   <span className='formLabel'>Course Name</span>
                   <input type='text' className={this.state.nameClass} onChange={e => this.setState({name: e.target.value.trim(), nameClass: 'inputText'})} />
+                  <span className="courseNameHint">Maximum 25 Characters</span>
                 </div>
                 <div className='formField'>
                   <span className='formLabel'>Start Date</span>
