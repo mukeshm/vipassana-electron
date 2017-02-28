@@ -56,10 +56,21 @@ const getStudents = function(student, cb){
     })
 }
 
+
+const saveStudent = function(student, cb){
+    let s = Student.create(student)
+    s.save().then(function(doc){
+	cb(null, doc._id)
+    }, function(err){
+	cb(err)
+    })
+}
+
 module.exports = {
     init,
     saveCourse,
     getCourse,
     getCourses,
-    getStudents
+    getStudents,
+    saveStudent
 }
