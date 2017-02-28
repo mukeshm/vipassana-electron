@@ -70,7 +70,12 @@ const getCourses = function(event, arg){
     })
 }
 
+const getStudents = function(event, arg){
+    console.log("course id ",arg)
+    event.sender.send('get-students', [])
+}
 
 ipcMain.on('add-course', addCourse)
 ipcMain.on('get-course', getCourse)
 ipcMain.on('get-courses', getCourses)
+ipcMain.on('get-students', getStudents)
