@@ -25,7 +25,19 @@ class Course extends Document {
     }
 }
 
+class Student extends Document {
+    constructor() {
+	super();
+
+	this.name = String
+	this.roomNo = String
+	this.seatNo = String
+	this.courseID = String
+    }
+}
+
 module.exports = {
     init,
-    Course
+    Course,
+    Student
 }
