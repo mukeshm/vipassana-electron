@@ -71,8 +71,13 @@ const getCourses = function(event, arg){
 }
 
 const getStudents = function(event, arg){
-    console.log("course id ",arg)
-    event.sender.send('get-students', [])
+    per.getStudents({courseID:arg}, function(err, docs){
+	if (err){
+	    console.log("Failed to get students for courseID : ", arg)
+	    console.log(err)
+	}
+	event.sender.send('get-students', docs)
+    })
 }
 
 ipcMain.on('add-course', addCourse)
