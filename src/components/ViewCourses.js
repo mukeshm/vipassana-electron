@@ -25,6 +25,25 @@ export default class ViewCourses extends Component {
     )
   }
 
+  showTableBody(){
+    return this.state.courseList.map(course=> {
+              let date = new Date(course.startDate)
+              return(
+                <div key={course._id} className='tableRow' onClick={()=> hashHistory.push(`/showcourse/${course._id}`)}>
+                    <div className='tableColumn courseName'>
+                    {course.name}
+                    </div>
+                    <div className='tableColumn courseDate'>
+                    {date.toLocaleDateString(undefined,{year: 'numeric', month: '2-digit', day: '2-digit' })}
+                    </div>
+                    <div className='tableColumn courseDuration'>
+                    {course.duration}
+                    </div>
+                </div>
+              )}
+          )
+  }
+
   renderData () {
     return (
       <div className='dashboard'>
@@ -41,22 +60,7 @@ export default class ViewCourses extends Component {
             </div>
           </div>
           <div className='tableBody'>
-               {this.state.courseList.map(course=> {
-                  let date = new Date(course.startDate)
-                  return(
-                    <div key={course._id} className='tableRow' onClick={()=> hashHistory.push(`/showcourse/${course._id}`)}>
-                        <div className='tableColumn courseName'>
-                        {course.name}
-                        </div>
-                        <div className='tableColumn courseDate'>
-                        {date.toLocaleDateString(undefined,{year: 'numeric', month: '2-digit', day: '2-digit' })}
-                        </div>
-                        <div className='tableColumn courseDuration'>
-                        {course.duration}
-                        </div>
-                    </div>
-                  )}
-              )}
+            {this.showTableBody()}
           </div>
         </div>
       </div>)
