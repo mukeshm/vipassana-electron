@@ -215,6 +215,7 @@ html, body{
 }
 .footer-buttons{
     margin-top: 5px;
+    margin-left: 10px;
     height: 35px;
     width:150px;
     background-color: #3c9cdd;
@@ -269,4 +270,71 @@ html, body{
 
 .formField:hover .Hint {
     visibility: visible;
+}
+
+.studentDetails{
+    display: block;
+}
+.studentDetailsName{
+    width:700px;
+}
+
+.studentDetailsRoomNo{
+    width: 500px;
+    float: left;
+}
+
+.studentDetailsSeatNo{
+    float: left;
+    width:300px;
+}
+
+.transactionsTable{
+    margin-top: 5px;
+    display: block;
+    height: 380px;
+    width: 800px;
+    border: 1px solid #263238;
+}
+
+.depositForm{
+    padding-left: 30px;
+    text-align: left;
+    font-size: 28px;
+    line-height: 50px;
+}
+
+.inputDeposit{
+    width:250px;
+    font-size: 28px;
+    padding: 5px;
+}
+
+.addTransactionButton{
+    width:250px;
+}
+
+.addTransactionSelect{
+    outline: none;
+    border: 2px solid;
+    border-color: rgb(148, 148, 148);
+    padding:2px 7px 3px;
+    line-height: 23px;
+    font-size:20px;
+    margin: 8px;
+    width: 338px;
+    height: 49px;
+    background-color: #fff;
+}
+
+.addTransactionInput{
+    outline: none;
+    border-style: solid;
+    border-color: rgb(148, 148, 148);
+    padding:2px 7px 3px;
+    line-height: 23px;
+    font-size:20px;
+    margin: 8px;
+    width: 320px;
+    height: 40px;
 }

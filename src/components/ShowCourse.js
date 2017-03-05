@@ -25,7 +25,9 @@ export default class ShowCourse extends Component {
     }
 
     renderLoading(){
-        return(<h1>Loading</h1>)
+        return(<div className='loaderWrapper'>
+        <div className='loader'></div>
+      </div>)
     }
 
     renderData(){
@@ -54,7 +56,7 @@ export default class ShowCourse extends Component {
            <div className='tableBody studentsTableBody'>
                 {this.state.studentsList.map(student=> {
                   return(
-                     <div key={student._id} className='StudentTableRow' onClick={() => hashHistory.push(`/viewstudent/${that.props.params.cid}/${student._id}`)}>
+                     <div key={student._id} className='StudentTableRow' onClick={() => hashHistory.push(`/viewstudent/${that.props.params.cid}/${JSON.stringify(student)}`)}>
                         <div className='studentTableColumn StudentName'>
                             {student.name}
                         </div>
@@ -77,15 +79,18 @@ export default class ShowCourse extends Component {
             </div>)
     }
 
+    getData(){
+          return (this.state.courseData && this.state.studentsList)? this.renderData() : this.renderLoading()    
+    }
+
     render(){
-        console.log(this.state)
            return (<div className="container">
              <div className='header'>
                 <button className='buttons nav-buttons' onClick={() => hashHistory.goBack()}>
                   Back
                 </button>
               </div>
-           {(this.state.courseData && this.state.studentsList)? this.renderData() : this.renderLoading()}
+              {this.getData()}
             </div>)
     }
 }
