@@ -82,9 +82,13 @@ export default class CreateCourse extends Component {
     )
   }
 
+  getData(){
+    return this.state.submitted ? this.renderLoading() : this.renderForm()
+  }
+
   render () {
     return (<div className='container'>
-              {this.state.submitted ? this.renderLoading() : this.renderForm()}
+             {this.getData()}
             </div>)
   }
 }

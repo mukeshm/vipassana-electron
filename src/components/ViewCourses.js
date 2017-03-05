@@ -65,6 +65,11 @@ export default class ViewCourses extends Component {
         </div>
       </div>)
   }
+
+  getData(){
+    return this.state.courseList ? this.renderData() : this.renderLoading()
+  }
+  
   render () {
     return (
       <div className='container'>
@@ -73,7 +78,7 @@ export default class ViewCourses extends Component {
             Home
           </button>
         </div>
-        {this.state.courseList ? this.renderData() : this.renderLoading()}
+        {this.getData()}
       </div>)
   }
 }
