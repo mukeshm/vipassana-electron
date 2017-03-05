@@ -294,7 +294,7 @@ html, body{
     display: block;
     height: 380px;
     width: 800px;
-    border: 1px solid #263238;
+    border-bottom: 1px solid #d1dbe0;
 }
 
 .depositForm{
@@ -337,4 +337,43 @@ html, body{
     margin: 8px;
     width: 320px;
     height: 40px;
+}
+
+.txnTableBody{
+     height: 335px;
+    float: left;
+    overflow-y: auto;
+    display: block;
+    margin-top: 2px;
+}
+
+.txntableColumn{
+     border: 1px solid #263238;
+    padding:5px;
+    float: left;
+    height: 25px;
+}
+
+.dateColumn{
+    width: 100px;
+}
+
+.typeColumn{
+    width: 100px;
+}
+
+.nameColumn{
+    width: 200px;
+}
+
+.rateColumn{
+    width: 100px;
+}
+
+.quantityColumn{
+    width: 100px;
+}
+
+.amountColumn{
+    width: 100px;
 }
