@@ -90,9 +90,19 @@ const addStudent = function(event, arg){
     })
 }
 
+const addTxn = function(event, arg){
+    per.saveTxn(arg, function(err, id){
+	if(err){
+	    console.log("Failed to save transaction")
+	    console.log(err)
+	}
+	event.sender.send('add-txn', id)
+    })
+}
 
 ipcMain.on('add-course', addCourse)
 ipcMain.on('get-course', getCourse)
 ipcMain.on('get-courses', getCourses)
 ipcMain.on('get-students', getStudents)
 ipcMain.on('add-student', addStudent)
+ipcMain.on('add-txn', addTxn)
