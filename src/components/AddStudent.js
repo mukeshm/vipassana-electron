@@ -2,21 +2,23 @@ import React, {Component} from 'react'
 import {hashHistory} from 'react-router'
 import {ipcRenderer} from 'electron'
 
-ipcRenderer.on('add-student', (event, arg) => {
-  console.log(arg)
-  hashHistory.goBack()
-})
-
 export default class AddStudent extends Component{
     componentWillMount () {
-    this.setState({
-      nameClass: 'inputText',
-      roomClass: 'inputText',
-      seatClass: 'inputText',
-      submitted: false,
-      name:'',
-      roomNo: '',
-      seatNo: ''
+      this.setState({
+        nameClass: 'inputText',
+        roomClass: 'inputText',
+        seatClass: 'inputText',
+        submitted: false,
+        name:'',
+        roomNo: '',
+        seatNo: ''
+      })
+  }
+
+  componentDidMount(){
+    ipcRenderer.on('add-student', (event, arg) => {
+      console.log(arg)
+      hashHistory.goBack()
     })
   }
   

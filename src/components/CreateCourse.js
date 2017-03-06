@@ -2,10 +2,6 @@ import React, { Component } from 'react'
 import { ipcRenderer } from 'electron'
 import { hashHistory } from 'react-router'
 
-ipcRenderer.on('add-course', (event, arg) => {
-  console.log('event,arg', arg)
-  hashHistory.push(`/showcourse/${arg}`)
-})
 export default class CreateCourse extends Component {
   componentWillMount () {
     this.setState({
@@ -19,6 +15,13 @@ export default class CreateCourse extends Component {
     })
   }
 
+  componentDidMount(){
+    ipcRenderer.on('add-course', (event, arg) => {
+      console.log('event,arg', arg)
+      hashHistory.push(`/showcourse/${arg}`)
+    })
+  }
+  
   componentWillUnmount(){
         ipcRenderer.removeAllListeners(['add-course'])
     }
