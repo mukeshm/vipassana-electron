@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {hashHistory} from 'react-router'
+import {ipcRenderer} from 'electron'
 
 export default class ViewStudent extends Component {
     constructor(props){
@@ -9,11 +10,59 @@ export default class ViewStudent extends Component {
             id : studentObj._id,
             name : studentObj.name,
             roomNo : studentObj.roomNo,
-            seatNo : studentObj.seatNo
+            seatNo : studentObj.seatNo,
+            txnsList : []
         }
     }
+
+    componentWillMount(){
+        ipcRenderer.send('get-txns', this.state.id)
+    }
+
+    componentDidMount(){
+        ipcRenderer.on('get-txns',(event, arg) => {
+            this.setState({
+                txnsList : arg
+            })
+        })
+    }
+
+    maybeValue(value){
+        return value ? value : '-'
+    }
+
+    showTableBody(){
+        return this.state.txnsList.map(txn=>{
+            let date = new Date(txn.date)
+            return ( 
+                <div key={txn._id} className="tableRow">
+                    <div className='txntableColumn dateColumn'>
+                        {date.toLocaleDateString(undefined,{year: 'numeric', month: '2-digit', day: '2-digit' })}
+                    </div>
+                    <div className='txntableColumn typeColumn'>
+                        {txn.type}
+                    </div>
+                    <div className='txntableColumn nameColumn'>
+                        {this.maybeValue(txn.name)}
+                    </div>
+                    <div className='txntableColumn rateColumn'>
+                        {this.maybeValue(txn.rate)}
+                    </div>
+                    <div className='txntableColumn quantityColumn'>
+                        {this.maybeValue(txn.quantity)}
+                    </div>
+                    <div className='txntableColumn amountColumn'>
+                        {txn.amount}
+                    </div>
+                </div>)
+
+
+
+            
+        })
+    }
+
     render(){
-        console.log(this.state)
          return (<div className="container">
              <div className='header'>
                 <button className='buttons nav-buttons' onClick={() => hashHistory.goBack()}>
@@ -49,67 +98,8 @@ export default class ViewStudent extends Component {
                         Amount
                         </div>
                     </div>
-                    <div className="txnTableBody">
-                        <div className="tableRow">
-                            <div className='txntableColumn dateColumn'>
-                            12/01/2017
-                            </div>
-                            <div className='txntableColumn typeColumn'>
-                            Purchase
-                            </div>
-                            <div className='txntableColumn nameColumn'>
-                            Tooth Paste
-                            </div>
-                            <div className='txntableColumn rateColumn'>
-                            50
-                            </div>
-                            <div className='txntableColumn quantityColumn'>
-                            20
-                            </div>
-                            <div className='txntableColumn amountColumn'>
-                            1000
-                            </div>
-                        </div>
-                        <div className="tableRow">
-                            <div className='txntableColumn dateColumn'>
-                            15/01/2017
-                            </div>
-                            <div className='txntableColumn typeColumn'>
-                            Deposit
-                            </div>
-                            <div className='txntableColumn nameColumn'>
-                            -
-                            </div>
-                            <div className='txntableColumn rateColumn'>
-                            -
-                            </div>
-                            <div className='txntableColumn quantityColumn'>
-                            -
-                            </div>
-                            <div className='txntableColumn amountColumn'>
-                            2000
-                            </div>
-                        </div>
-                        <div className="tableRow">
-                            <div className='txntableColumn dateColumn'>
-                            09/03/2017
-                            </div>
-                            <div className='txntableColumn typeColumn'>
-                            Laundry
-                            </div>
-                            <div className='txntableColumn nameColumn'>
-                            -
-                            </div>
-                            <div className='txntableColumn rateColumn'>
-                            20
-                            </div>
-                            <div className='txntableColumn quantityColumn'>
-                            10
-                            </div>
-                            <div className='txntableColumn amountColumn'>
-                            200
-                            </div>
-                        </div>
+                    <div className="txnTableBody">  
+                        {this.showTableBody()}
                     </div>
                  </div>
                  <div className='footer'>
