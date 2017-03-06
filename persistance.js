@@ -76,6 +76,14 @@ const saveTxn = function(txn, cb){
     })
 }
 
+const getTxns = function(txn, cb){
+    Txn.find(txn, {sort: '-date'}).then(function(docs){
+	cb(null, docs)
+    }, function(err){
+	cb(err)
+    })
+}
+
 module.exports = {
     init,
     saveCourse,
@@ -83,5 +91,6 @@ module.exports = {
     getCourses,
     getStudents,
     saveStudent,
-    saveTxn
+    saveTxn,
+    getTxns
 }
