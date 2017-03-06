@@ -2,11 +2,6 @@ import React, {Component} from 'react'
 import {hashHistory} from 'react-router'
 import {ipcRenderer} from 'electron'
 
-ipcRenderer.on('add-txn', (event, arg) => {
-  console.log(arg)
-  hashHistory.goBack()
-})
-
 export default class AddDeposit extends Component {
     constructor(props){
         super(props)
@@ -18,6 +13,16 @@ export default class AddDeposit extends Component {
             seatNo : studentObj.seatNo,
             amount : 0
         }
+    }
+
+    componentDidMount(){
+        ipcRenderer.on('add-txn', (event, arg) => {
+        hashHistory.goBack()
+        })
+    }
+    
+    componentWillUnmount(){
+        ipcRenderer.removeAllListeners(['add-txn'])
     }
 
     handleSubmit(){

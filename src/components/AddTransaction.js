@@ -2,11 +2,6 @@ import React, {Component} from 'react'
 import {hashHistory} from 'react-router'
 import {ipcRenderer} from 'electron'
 
-ipcRenderer.on('add-txn', (event, arg) => {
-  console.log(arg)
-  hashHistory.goBack()
-})
-
 export default class AddTransaction extends Component {
     constructor(props){
         super(props)
@@ -22,6 +17,16 @@ export default class AddTransaction extends Component {
             quantity : 0, 
             amount : 0
         }
+    }
+
+    componentWillUnmount(){
+        ipcRenderer.removeAllListeners(['add-txn'])
+    }
+
+    componentDidMount(){
+        ipcRenderer.on('add-txn', (event, arg) => {
+        hashHistory.goBack()
+        })
     }
 
     updateRate(data){
