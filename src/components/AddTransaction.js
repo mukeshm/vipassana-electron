@@ -1,5 +1,11 @@
 import React, {Component} from 'react'
 import {hashHistory} from 'react-router'
+import {ipcRenderer} from 'electron'
+
+ipcRenderer.on('add-txn', (event, arg) => {
+  console.log(arg)
+  hashHistory.goBack()
+})
 
 export default class AddTransaction extends Component {
     constructor(props){
@@ -18,16 +24,35 @@ export default class AddTransaction extends Component {
         }
     }
 
+    updateRate(data){
+        this.setState({
+            rate : data,
+            amount : this.state.quantity * data
+        })
+    }
+
+    updateQuantity(data){
+        this.setState({
+            quantity : data,
+            amount : data * this.state.rate
+        })
+    }
+
     handleSubmit(){
+        let date = new Date()
         let txnObj = {
-            studentId : this.state.id,
+            studentID : this.state.id,
             type : this.state.type,
-            name : this.state.name,
-            rate : this.state.rate,
-            quantity : this.state.quantity,
-            amount : this.state.amount
+            rate : Number(this.state.rate),
+            quantity : Number(this.state.quantity),
+            amount : Number(this.state.amount),
+            date : date.toISOString()
         }
-        console.log(txnObj)
+
+        if (this.state.type === 'purchase'){
+            txnObj.name = this.state.name
+        }
+        ipcRenderer.send('add-txn',txnObj)
     }
 
     nameInputBox(){
@@ -75,15 +100,15 @@ export default class AddTransaction extends Component {
                 {this.showNameBox()}
                  <div className='formField'>
                     <span className='formLabel'>Rate</span>
-                    <input type='number' className='addTransactionInput' min="0" maxLength="5" onChange={e => this.setState({rate : e.target.value})}/>
+                    <input type='number' className='addTransactionInput' min="0" maxLength="5" onChange={e => this.updateRate(e.target.value)}/>
                  </div>
                  <div className='formField'>
                     <span className='formLabel'>Quantity</span>
-                    <input type='number' className='addTransactionInput' min="0" maxLength="5" onChange={e => this.setState({quantity : e.target.value})}/>
+                    <input type='number' className='addTransactionInput' min="0" maxLength="5" onChange={e => this.updateQuantity(e.target.value)}/>
                  </div>
                   <div className='formField'>
                     <span className='formLabel'>Amount</span>
-                    <input type='number' className='addTransactionInput' min="0" maxLength="5" onChange={e => this.setState({amount : e.target.value})}/>
+                    <input type='number' disabled className='addTransactionInput' value={this.state.amount}/>
                  </div>
                 <br/>
                 <button className="buttons" onClick={this.handleSubmit.bind(this)}>Submit</button>

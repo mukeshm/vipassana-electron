@@ -1,5 +1,11 @@
 import React, {Component} from 'react'
 import {hashHistory} from 'react-router'
+import {ipcRenderer} from 'electron'
+
+ipcRenderer.on('add-txn', (event, arg) => {
+  console.log(arg)
+  hashHistory.goBack()
+})
 
 export default class AddDeposit extends Component {
     constructor(props){
@@ -15,12 +21,14 @@ export default class AddDeposit extends Component {
     }
 
     handleSubmit(){
+        let date = new Date()
         let txnObj = {
-            studentId : this.state.id,
+            studentID : this.state.id,
             type : 'deposit',
-            amount : this.state.amount
+            amount : Number(this.state.amount),
+            date : date.toISOString()
         }
-        console.log(txnObj)
+        ipcRenderer.send('add-txn',txnObj)
     }
     render(){
         return (<div className="container">
