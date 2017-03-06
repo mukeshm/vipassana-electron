@@ -27,6 +27,10 @@ export default class ViewStudent extends Component {
         })
     }
 
+    componentWillUnmount(){
+        ipcRenderer.removeAllListeners(['get-txns'])
+    }
+
     maybeValue(value){
         return value ? value : '-'
     }

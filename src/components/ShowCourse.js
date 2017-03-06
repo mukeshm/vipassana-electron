@@ -24,6 +24,11 @@ export default class ShowCourse extends Component {
         })
     }
 
+   componentWillUnmount(){
+        ipcRenderer.removeAllListeners(['get-course'])
+        ipcRenderer.removeAllListeners(['get-students'])
+    }
+
     renderLoading(){
         return(<div className='loaderWrapper'>
         <div className='loader'></div>

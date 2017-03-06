@@ -19,6 +19,10 @@ export default class AddStudent extends Component{
       seatNo: ''
     })
   }
+  
+  componentWillUnmount(){
+      ipcRenderer.removeAllListeners(['add-student'])
+  }
 
   isNameValid(name){
      if (name === '' || name.length >25 ) {

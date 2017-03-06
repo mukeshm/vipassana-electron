@@ -18,6 +18,11 @@ export default class CreateCourse extends Component {
       submitted: false
     })
   }
+
+  componentWillUnmount(){
+        ipcRenderer.removeAllListeners(['add-course'])
+    }
+
   sendData () {
     let obj = {
       name: this.state.name,
