@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {hashHistory} from 'react-router'
 import {ipcRenderer} from 'electron'
+import {isNumberValid, isNameValid} from '../js/checkValidation'
 
 export default class AddTransaction extends Component {
     constructor(props){
@@ -15,7 +16,10 @@ export default class AddTransaction extends Component {
             name : null,
             rate : 0,
             quantity : 0, 
-            amount : 0
+            amount : 0,
+            rateClass : 'addTransactionInput',
+            quantityClass : 'addTransactionInput',
+            nameClass : 'addTransactionInput'
         }
     }
 
@@ -32,15 +36,49 @@ export default class AddTransaction extends Component {
     updateRate(data){
         this.setState({
             rate : data,
-            amount : this.state.quantity * data
+            amount : this.state.quantity * data,
+            rateClass : 'addTransactionInput'
         })
     }
 
     updateQuantity(data){
         this.setState({
             quantity : data,
-            amount : data * this.state.rate
+            amount : data * this.state.rate,
+            quantityClass : 'addTransactionInput'
         })
+    }
+
+    updateName(data){
+        this.setState({
+            name : data,
+            nameClass : 'addTransactionInput'})
+    }
+
+    validateNumber(num, numClassName, max){
+        let itemValidation = isNumberValid(num, max)
+        if(itemValidation) {
+            return true
+        }
+        let stateObj = {}
+        stateObj[numClassName] = 'addTransactionInput errorInput'
+        this.setState(stateObj)
+        return false
+    }
+
+    validateName(name, nameClassName){
+        let nameValidation = isNameValid(name)
+        if(nameValidation) {
+            return true
+        }
+        let stateObj = {}
+        stateObj[nameClassName] = 'addTransactionInput errorInput'
+        this.setState(stateObj)
+        return false
+    }
+
+    submitData(txnObj){
+        ipcRenderer.send('add-txn',txnObj)
     }
 
     handleSubmit(){
@@ -53,17 +91,38 @@ export default class AddTransaction extends Component {
             amount : Number(this.state.amount),
             date : date.toISOString()
         }
-
+        
         if (this.state.type === 'purchase'){
             txnObj.name = this.state.name
+            this.purchaseSubmit(txnObj)
         }
-        ipcRenderer.send('add-txn',txnObj)
+        else{
+            this.laundrySubmit(txnObj)
+        }
+    }
+
+    laundrySubmit(txnObj){
+        let isRateValid = this.validateNumber(this.state.rate, 'rateClass' , 9999)
+        let isQaunValid = this.validateNumber(this.state.quantity, 'quantityClass' , 9999)
+        if(isQaunValid && isRateValid) {
+             this.submitData(txnObj)
+        }
+    }
+
+    purchaseSubmit(txnObj){
+        let isItemNameValid = this.validateName(this.state.name, 'nameClass')
+        let isRateValid = this.validateNumber(this.state.rate, 'rateClass', 9999)
+        let isQaunValid = this.validateNumber(this.state.quantity, 'quantityClass', 9999)
+        if(isItemNameValid && isQaunValid && isRateValid) {
+             this.submitData(txnObj)
+        }
     }
 
     nameInputBox(){
         return ( <div className='formField'>
                     <span className='formLabel'>Name</span>
-                    <input type='text' className='addTransactionInput'  maxLength="20" onChange={e => this.setState({name : e.target.value})}/>
+                    <input type='text' className={this.state.nameClass}  maxLength="20" onChange={e => this.updateName(e.target.value)}/>
+                     <span className="Hint">Maximum 20 Characters</span>
                  </div>)
     }
 
@@ -105,11 +164,13 @@ export default class AddTransaction extends Component {
                 {this.showNameBox()}
                  <div className='formField'>
                     <span className='formLabel'>Rate</span>
-                    <input type='number' className='addTransactionInput' min="0" maxLength="5" onChange={e => this.updateRate(e.target.value)}/>
+                    <input type='number' className={this.state.rateClass} min="1" max="9999" onChange={e => this.updateRate(e.target.value)}/>
+                     <span className="Hint">1-9999</span>
                  </div>
                  <div className='formField'>
                     <span className='formLabel'>Quantity</span>
-                    <input type='number' className='addTransactionInput' min="0" maxLength="5" onChange={e => this.updateQuantity(e.target.value)}/>
+                    <input type='number' className={this.state.quantityClass} min="1" max="9999" onChange={e => this.updateQuantity(e.target.value)}/>
+                     <span className="Hint">1-9999</span>
                  </div>
                   <div className='formField'>
                     <span className='formLabel'>Amount</span>
