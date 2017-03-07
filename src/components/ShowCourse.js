@@ -77,6 +77,9 @@ export default class ShowCourse extends Component {
                </div>
             </div>
              <div className='footer'>
+                <button className='end-button' onClick={() => hashHistory.push(`/coursesummary/${this.props.params.cid}`)}>
+                  Summary
+                </button>
                 <button className='buttons footer-buttons' onClick={() => hashHistory.push(`/addstudent/${this.props.params.cid}`)}>
                   Add Student
                 </button>
