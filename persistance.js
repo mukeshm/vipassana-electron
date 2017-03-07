@@ -92,6 +92,43 @@ const getTxns = function(student, cb){
     })
 }
 
+const reduceTxns = function(acc, txn){
+    switch(txn.type){
+    case "deposit":
+	acc.deposit += txn.amount
+	break
+
+    case "laundry":
+	acc.laundry += txn.amount
+	break
+
+    case "purchase":
+	acc.purchase += txn.amount
+	break
+    }
+    return acc
+}
+
+const cleanStudent = function(student){
+
+    let monies = student.txns.reduce(reduceTxns, {deposit: 0,laundry: 0,purchase: 0})
+    return {
+	name : student.name,
+	roomNo : student.roomNo,
+	seatNo : student.seatNo,
+	monies : monies
+    }
+}
+
+const getCourseSummary = function(course, cb){
+    Student.find({courseID: course._id}, {sort: 'name'}).then(function(docs){
+	let sumDocs = docs.map(cleanStudent)
+	cb(null, sumDocs)
+    }, function(err){
+	cb(err)
+    })
+}
+
 module.exports = {
     init,
     saveCourse,
@@ -100,5 +137,6 @@ module.exports = {
     getStudents,
     saveStudent,
     saveTxn,
-    getTxns
+    getTxns,
+    getCourseSummary
 }

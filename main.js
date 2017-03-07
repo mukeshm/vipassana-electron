@@ -110,6 +110,15 @@ const getTxns = function(event, arg){
     })
 }
 
+const getCourseSummary = function(event, arg){
+    per.getCourseSummary({_id:arg}, function(err, docs){
+	if (err){
+	    console.log("Failed to get transaction summary for course : ", arg)
+	    console.log(err)
+	}
+	event.sender.send('get-course-summary', docs)
+    })
+}
 
 ipcMain.on('add-course', addCourse)
 ipcMain.on('get-course', getCourse)
@@ -118,3 +127,4 @@ ipcMain.on('get-students', getStudents)
 ipcMain.on('add-student', addStudent)
 ipcMain.on('add-txn', addTxn)
 ipcMain.on('get-txns', getTxns)
+ipcMain.on('get-course-summary', getCourseSummary)
