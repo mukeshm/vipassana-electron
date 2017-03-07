@@ -101,7 +101,7 @@ const addTxn = function(event, arg){
 }
 
 const getTxns = function(event, arg){
-    per.getTxns({studentID:arg}, function(err, docs){
+    per.getTxns({_id:arg}, function(err, docs){
 	if (err){
 	    console.log("Failed to get transactions for studentID : ", arg)
 	    console.log(err)

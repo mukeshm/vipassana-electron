@@ -57,7 +57,6 @@ const getStudents = function(student, cb){
     })
 }
 
-
 const saveStudent = function(student, cb){
     let s = Student.create(student)
     s.save().then(function(doc){
@@ -67,18 +66,27 @@ const saveStudent = function(student, cb){
     })
 }
 
-const saveTxn = function(txn, cb){
-    let t = Txn.create(txn)
-    t.save().then(function(doc){
-	cb(null, doc._id)
+const addTxn = function(student, txn, cb){
+    student.txns.push(txn);
+    student.save().then(function(doc){
+	cb(null,student._id)
     }, function(err){
 	cb(err)
     })
 }
 
-const getTxns = function(txn, cb){
-    Txn.find(txn, {sort: '-date'}).then(function(docs){
-	cb(null, docs)
+const saveTxn = function(txn, cb){
+    let t = Txn.create(txn)
+    Student.findOne({_id: txn.studentID}).then(function(doc){
+	addTxn(doc, t, cb)
+    }, function(err){
+	cb(err)
+    })
+}
+
+const getTxns = function(student, cb){
+    Student.findOne(student).then(function(doc){
+	cb(null, doc.txns)
     }, function(err){
 	cb(err)
     })
