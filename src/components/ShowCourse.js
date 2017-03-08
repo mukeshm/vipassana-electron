@@ -77,6 +77,10 @@ export default class ShowCourse extends Component {
             </div>)
     }
 
+    getData(){
+        return (this.state.courseData && this.state.studentsList)? this.renderData() : this.renderLoading()
+    }
+
     render(){
         console.log(this.state)
            return (<div className="container">
@@ -85,7 +89,7 @@ export default class ShowCourse extends Component {
                   Back
                 </button>
               </div>
-           {(this.state.courseData && this.state.studentsList)? this.renderData() : this.renderLoading()}
+              {this.getData()}
             </div>)
     }
 }
