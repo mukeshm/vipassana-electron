@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { ipcRenderer } from 'electron'
 import { hashHistory } from 'react-router'
-import { isCourseNameValid} from './validation'
+import { isCourseNameValid, isDateValid, isDurationValid} from './validation'
 
 ipcRenderer.on('add-course', (event, arg) => {
   hashHistory.push(`/showcourse/${arg}`)
