@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import { ipcRenderer } from 'electron'
 import { hashHistory } from 'react-router'
+import { isCourseNameValid, isDateValid, isDurationValid} from './validation'
 
 ipcRenderer.on('add-course', (event, arg) => {
-  console.log('event,arg', arg)
+  hashHistory.push(`/showcourse/${arg}`)
 })
+
 export default class CreateCourse extends Component {
   componentWillMount () {
     this.setState({
@@ -28,36 +30,11 @@ export default class CreateCourse extends Component {
       submitted: true
     })
   }
-
-  isNameValid(name){
-     if (name === '') {
-        this.setState({nameClass: 'inputText errorInput'})
-        return false
-      }
-    return true
-  }
-
-  isDateValid(date){
-    if (date === '') {
-        this.setState({dateClass: 'inputText errorInput'})
-        return false
-      }
-    return true
-  }
-  
-  isDurationValid(duration){
-       if (duration <= 0) {
-        this.setState({durationClass: 'inputText errorInput'})
-        return false
-      }
-      return true
-  }
-  
   
   handleSubmit () {
-    let nameValidation = this.isNameValid(this.state.name)
-    let dateValidation = this.isDateValid(this.state.startdate)
-    let durationValidation = this.isDurationValid(this.state.duration)
+    let nameValidation = isCourseNameValid(this.state.name, this)
+    let dateValidation = isDateValid(this.state.startdate, this)
+    let durationValidation = isDurationValid(this.state.duration, this)
     if ( nameValidation && dateValidation && durationValidation) {
       this.sendData()
     }
@@ -83,6 +60,7 @@ export default class CreateCourse extends Component {
                 <div className='formField'>
                   <span className='formLabel'>Course Name</span>
                   <input type='text' className={this.state.nameClass} onChange={e => this.setState({name: e.target.value.trim(), nameClass: 'inputText'})} />
+                  <span className="courseNameHint">Maximum 25 Characters</span>
                 </div>
                 <div className='formField'>
                   <span className='formLabel'>Start Date</span>
@@ -104,9 +82,13 @@ export default class CreateCourse extends Component {
     )
   }
 
+  getData(){
+    return this.state.submitted ? this.renderLoading() : this.renderForm()
+  }
+
   render () {
     return (<div className='container'>
-              {this.state.submitted ? this.renderLoading() : this.renderForm()}
+             {this.getData()}
             </div>)
   }
 }

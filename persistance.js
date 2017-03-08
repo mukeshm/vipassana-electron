@@ -38,8 +38,18 @@ const getCourse = function(course, cb){
     })
 }
 
+const getCourses = function(course, cb){
+    Course.find(course, {sort: '-startDate'}).then(function(docs){
+	cb(null, docs)
+    }, function(err){
+	cb(err)
+    })
+}
+
+
 module.exports = {
     init,
     saveCourse,
-    getCourse
+    getCourse,
+    getCourses
 }
