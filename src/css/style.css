@@ -11,13 +11,16 @@ html, body{
 .container{
     background-color: #fefefe;
     margin: auto;
-    margin-top: 5%;
+    margin-top: 3%;
     height: 500px;
     width: 800px;
     padding: 30px;
     text-align: center;
 }
 
+.content{
+    margin-top: 50px;
+}
 .welcomeScreen{
     text-align: center;
     margin: auto;
@@ -133,15 +136,18 @@ html, body{
 
 .tableBody{
     height: 400px;
-    overflow-y: scroll;
-    display: inline-block;
-    margin-top: 10px;
+    float: left;
+    overflow-y: auto;
+    display: block;
+    margin-top: 2px;
 }
 
 .tableRow{
-    display: inline-block;
+    float:left;
     font-size: 18px;
     cursor: pointer;
+    margin-top: 5px;
+
 }
 
 .tableRow:hover{
@@ -164,4 +170,83 @@ html, body{
 
 .courseDuration{
     width:120px;
+}
+
+.courseDetails{
+    display: block;
+}
+.detailsHeader{
+    text-align: left;
+    display: block;
+    font-size: 18px;
+}
+
+.studentsTable{
+    margin-top: 20px;
+}
+
+.studentsTableBody{
+    height: 330px;
+    border-bottom: 0.1px solid #d1dbe0;
+}
+
+.StudentName{
+    width:450px;
+    font-size: 18px;
+      padding-bottom:1px;
+}
+
+.StudentRoomNo{
+    width: 150px;
+    font-size: 18px;
+      padding-bottom:1px;
+}
+
+.studentSeat{
+    width: 120px;
+    font-size: 18px;
+      padding-bottom:1px;
+}
+.footer{
+    text-align: right;
+}
+.footer-buttons{
+    margin-top: 5px;
+    height: 35px;
+    width:150px;
+    background-color: #3c9cdd;
+    font-size: 20px;
+}
+
+.addStudentForm{
+    margin-top: 50px;
+}
+
+.StudentTableRow{
+         float:left;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 3px;
+   
+}
+
+.StudentTableRow:hover{
+    background-color: #8cb8f2;
+}
+
+.studentTableColumn{
+     border: 1px solid #263238;
+    padding:3px 5px;
+    float: left;
+    height: 23px;
+}
+
+.headerSecondLine{
+    display: inline-block;
+    width: 800px;
+}
+
+.courseDetailsDate{
+    width:500px;
+    float: left;
 }
