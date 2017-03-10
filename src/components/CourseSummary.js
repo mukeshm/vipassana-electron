@@ -27,7 +27,7 @@ export default class CourseSummary extends Component {
             return (<div className="cardBody" >
                 <span className="cardLabel" >Name : </span><span className="cardData">{data.name}</span>
                 <span className="cardLabel" >Room No. : </span><span className="cardData">{data.roomNo}</span>
-                <span className="cardLabel" >Seat No. : </span><span className="cardData">{data.roomNo}</span>
+                <span className="cardLabel" >Seat No. : </span><span className="cardData">{data.seatNo}</span>
                  <span className="cardLabel" >Purchase : </span><span className="cardData">{data.monies.purchase}</span>
                  <span className="cardLabel" >Laundry : </span><span className="cardData">{data.monies.laundry}</span>
                  <span className="cardLabel" >Deposit : </span><span className="cardData">{data.monies.deposit}</span>
