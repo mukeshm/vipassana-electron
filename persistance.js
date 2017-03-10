@@ -1,6 +1,7 @@
 const models = require('./models')
 const Course = models.Course
 const Student = models.Student
+const Txn = models.Txn
 const path = require('path')
 const url = require('url')
 
@@ -66,11 +67,30 @@ const saveStudent = function(student, cb){
     })
 }
 
+const saveTxn = function(txn, cb){
+    let t = Txn.create(txn)
+    t.save().then(function(doc){
+	cb(null, doc._id)
+    }, function(err){
+	cb(err)
+    })
+}
+
+const getTxns = function(txn, cb){
+    Txn.find(txn, {sort: '-date'}).then(function(docs){
+	cb(null, docs)
+    }, function(err){
+	cb(err)
+    })
+}
+
 module.exports = {
     init,
     saveCourse,
     getCourse,
     getCourses,
     getStudents,
-    saveStudent
+    saveStudent,
+    saveTxn,
+    getTxns
 }

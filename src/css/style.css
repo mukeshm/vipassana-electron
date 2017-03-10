@@ -68,7 +68,7 @@ html, body{
 }
 
 .errorInput{
-    border-color: #c0392b;
+    border-color: #c0392b !important;
 }
 
 .loader {
@@ -213,6 +213,7 @@ html, body{
 }
 .footer-buttons{
     margin-top: 5px;
+    margin-left: 10px;
     height: 35px;
     width:150px;
     background-color: #3c9cdd;
@@ -255,6 +256,7 @@ html, body{
 .formField .Hint {
     visibility: hidden;
     width: 120px;
+    font-size: 15px;
     background-color: black;
     color: #fff;
     text-align: center;
@@ -262,9 +264,138 @@ html, body{
     border-radius: 6px;
     position: absolute;
     z-index: 1;
-    margin-top: 15px;
+    margin-top: 10px;
 }
 
 .formField:hover .Hint {
+    visibility: visible;
+}
+
+.studentDetails{
+    display: block;
+}
+.studentDetailsName{
+    width:700px;
+}
+
+.studentDetailsRoomNo{
+    width: 500px;
+    float: left;
+}
+
+.studentDetailsSeatNo{
+    float: left;
+    width:300px;
+}
+
+.transactionsTable{
+    margin-top: 5px;
+    display: block;
+    height: 380px;
+    width: 800px;
+    border-bottom: 1px solid #d1dbe0;
+}
+
+.depositForm{
+    padding-left: 30px;
+    text-align: left;
+    font-size: 28px;
+    line-height: 50px;
+}
+
+.inputDeposit{
+    outline: none;
+    border-style: solid;
+    border-color: rgb(148, 148, 148);
+    width:250px;
+    font-size: 28px;
+    padding: 5px;
+}
+
+.addTransactionButton{
+    width:250px;
+}
+
+.addTransactionSelect{
+    outline: none;
+    border: 2px solid;
+    border-color: rgb(148, 148, 148);
+    padding:2px 7px 3px;
+    line-height: 23px;
+    font-size:20px;
+    margin: 8px;
+    width: 338px;
+    height: 49px;
+    background-color: #fff;
+}
+
+.addTransactionInput{
+    outline: none;
+    border-style: solid;
+    border-color: rgb(148, 148, 148);
+    padding:2px 7px 3px;
+    line-height: 23px;
+    font-size:20px;
+    margin: 8px;
+    width: 320px;
+    height: 40px;
+}
+
+.txnTableBody{
+     height: 335px;
+    float: left;
+    overflow-y: auto;
+    display: block;
+    margin-top: 2px;
+}
+
+.txntableColumn{
+     border: 1px solid #263238;
+    padding:5px;
+    float: left;
+    height: 25px;
+}
+
+.dateColumn{
+    width: 100px;
+}
+
+.typeColumn{
+    width: 100px;
+}
+
+.nameColumn{
+    width: 200px;
+}
+
+.rateColumn{
+    width: 100px;
+}
+
+.quantityColumn{
+    width: 100px;
+}
+
+.amountColumn{
+    width: 100px;
+}
+
+.depositField .Hint{
+    visibility: hidden;
+    width: 150px;
+    font-size: 15px;
+    height: 30px;
+    line-height: 30px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    margin: 15px;
+
+}
+
+.depositField:hover .Hint{
     visibility: visible;
 }

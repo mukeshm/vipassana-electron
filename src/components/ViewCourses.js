@@ -9,6 +9,7 @@ export default class ViewCourses extends Component {
       courseList: null
     })
   }
+  
   componentDidMount () {
     ipcRenderer.on('get-courses', (event, arg) => {
       this.setState({
@@ -17,6 +18,10 @@ export default class ViewCourses extends Component {
     })
   }
 
+  componentWillUnmount(){
+        ipcRenderer.removeAllListeners(['get-courses'])
+  }
+  
   renderLoading () {
     return (
       <div className='loaderWrapper'>
