@@ -1,5 +1,6 @@
 const models = require('./models')
 const Course = models.Course
+const Student = models.Student
 const path = require('path')
 const url = require('url')
 
@@ -47,9 +48,29 @@ const getCourses = function(course, cb){
 }
 
 
+const getStudents = function(student, cb){
+    Student.find(student, {sort: 'name'}).then(function(docs){
+	cb(null, docs)
+    }, function(err){
+	cb(err)
+    })
+}
+
+
+const saveStudent = function(student, cb){
+    let s = Student.create(student)
+    s.save().then(function(doc){
+	cb(null, doc._id)
+    }, function(err){
+	cb(err)
+    })
+}
+
 module.exports = {
     init,
     saveCourse,
     getCourse,
-    getCourses
+    getCourses,
+    getStudents,
+    saveStudent
 }

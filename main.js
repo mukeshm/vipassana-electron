@@ -70,7 +70,29 @@ const getCourses = function(event, arg){
     })
 }
 
+const getStudents = function(event, arg){
+    per.getStudents({courseID:arg}, function(err, docs){
+	if (err){
+	    console.log("Failed to get students for courseID : ", arg)
+	    console.log(err)
+	}
+	event.sender.send('get-students', docs)
+    })
+}
+
+const addStudent = function(event, arg){
+    per.saveStudent(arg, function(err, id){
+	if(err){
+	    console.log("Failed to save student")
+	    console.log(err)
+	}
+	event.sender.send('add-student', id)
+    })
+}
+
 
 ipcMain.on('add-course', addCourse)
 ipcMain.on('get-course', getCourse)
 ipcMain.on('get-courses', getCourses)
+ipcMain.on('get-students', getStudents)
+ipcMain.on('add-student', addStudent)
