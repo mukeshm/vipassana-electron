@@ -90,9 +90,31 @@ const addStudent = function(event, arg){
     })
 }
 
+const addTxn = function(event, arg){
+    per.saveTxn(arg, function(err, id){
+	if(err){
+	    console.log("Failed to save transaction")
+	    console.log(err)
+	}
+	event.sender.send('add-txn', id)
+    })
+}
+
+const getTxns = function(event, arg){
+    per.getTxns({studentID:arg}, function(err, docs){
+	if (err){
+	    console.log("Failed to get transactions for studentID : ", arg)
+	    console.log(err)
+	}
+	event.sender.send('get-txns', docs)
+    })
+}
+
 
 ipcMain.on('add-course', addCourse)
 ipcMain.on('get-course', getCourse)
 ipcMain.on('get-courses', getCourses)
 ipcMain.on('get-students', getStudents)
 ipcMain.on('add-student', addStudent)
+ipcMain.on('add-txn', addTxn)
+ipcMain.on('get-txns', getTxns)

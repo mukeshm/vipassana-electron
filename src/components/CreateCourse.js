@@ -3,10 +3,6 @@ import { ipcRenderer } from 'electron'
 import { hashHistory } from 'react-router'
 import { isCourseNameValid, isDateValid, isDurationValid} from './validation'
 
-ipcRenderer.on('add-course', (event, arg) => {
-  hashHistory.push(`/showcourse/${arg}`)
-})
-
 export default class CreateCourse extends Component {
   componentWillMount () {
     this.setState({
@@ -19,6 +15,17 @@ export default class CreateCourse extends Component {
       submitted: false
     })
   }
+
+  componentDidMount(){
+    ipcRenderer.on('add-course', (event, arg) => {
+      hashHistory.push(`/showcourse/${arg}`)
+    })
+  }
+  
+  componentWillUnmount(){
+        ipcRenderer.removeAllListeners(['add-course'])
+    }
+
   sendData () {
     let obj = {
       name: this.state.name,

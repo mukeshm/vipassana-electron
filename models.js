@@ -36,8 +36,27 @@ class Student extends Document {
     }
 }
 
+class Txn extends Document {
+    constructor() {
+	super();
+
+	this.studentID = String
+	this.type = {
+	    type:String,
+	    choices : ['deposit', 'purchase', 'laundry']
+	}
+	this.name = String
+	this.rate = Number
+	this.quantity = Number
+	this.amount = Number
+	this.date = Date
+    }
+}
+
+
 module.exports = {
     init,
     Course,
-    Student
+    Student,
+    Txn
 }
