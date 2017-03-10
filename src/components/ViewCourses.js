@@ -79,8 +79,8 @@ export default class ViewCourses extends Component {
     return (
       <div className='container'>
         <div className='header'>
-          <button className='buttons nav-buttons' onClick={() => hashHistory.push('/')}>
-            Home
+          <button className='buttons add-button' onClick={() => hashHistory.push('/createcourse')}>
+            Add Course
           </button>
         </div>
         {this.getData()}

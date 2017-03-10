@@ -399,3 +399,21 @@ html, body{
 .depositField:hover .Hint{
     visibility: visible;
 }
+
+.add-button{
+    float: right;
+    width:200px;
+}
+
+.end-button{
+    margin-top: 5px;
+    margin-left: 10px;
+    height: 35px;
+    width:150px;
+    font-size: 20px;
+    float: left;
+    color: #fff;
+    background-color: #27ae60;
+    border: solid #27ae60;
+    cursor: pointer;
+}
