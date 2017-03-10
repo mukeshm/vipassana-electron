@@ -175,6 +175,7 @@ html, body{
 .courseDetails{
     display: block;
 }
+
 .detailsHeader{
     text-align: left;
     display: block;
@@ -218,10 +219,6 @@ html, body{
     font-size: 20px;
 }
 
-.addStudentForm{
-    margin-top: 50px;
-}
-
 .StudentTableRow{
          float:left;
         font-size: 16px;
@@ -249,4 +246,25 @@ html, body{
 .courseDetailsDate{
     width:500px;
     float: left;
+}
+
+.addStudentForm{
+    margin-top: 50px;
+}
+
+.formField .Hint {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    margin-top: 15px;
+}
+
+.formField:hover .Hint {
+    visibility: visible;
 }
