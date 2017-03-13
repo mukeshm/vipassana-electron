@@ -446,3 +446,26 @@ html, body{
     width: 250px;
     float: left
 }
+
+.page-break{
+    display: none;
+}
+
+@media print {
+    .header{
+        visibility: hidden;
+    }
+
+    .container{
+        margin: 0px !important;
+        height: 100%;
+    }
+
+    .pageContainer{
+        margin: 0px;
+        border: none;
+        height: 100%;
+    }
+
+    .page-break	{ display: inline-block; page-break-before: always; }
+}
