@@ -52,7 +52,7 @@ export default class CourseSummary extends Component {
         return(<div className="container">
                     <div className="header">
                         <button className="buttons nav-buttons" onClick={() => hashHistory.goBack()} >Back</button>
-                        <button className="buttons add-button" onClick={() => this.printSummary()}> Print Summary </button>
+                        <button className="buttons add-button" onClick={() => this.printSummary()}> Print </button>
                     </div>
                     <div className="pageContainer">
                         {this.showSummary()}
