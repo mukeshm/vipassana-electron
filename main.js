@@ -1,6 +1,8 @@
-const {app, BrowserWindow, ipcMain} = require('electron')
+const {app, BrowserWindow, ipcMain, shell} = require('electron')
 const path = require('path')
 const url = require('url')
+const fs = require('fs')
+const os = require('os')
 const per = require('./persistance')
 
 let win
@@ -120,6 +122,21 @@ const getCourseSummary = function(event, arg){
     })
 }
 
+const printPDF = function(event) {
+	const pdfPath = path.join(os.tmpdir(), 'print.pdf')
+  	const win = BrowserWindow.fromWebContents(event.sender)
+  	win.webContents.printToPDF({}, function (error, data) {
+    	if (error) throw error
+    	fs.writeFile(pdfPath, data, function (error) {
+      		if (error) {
+        		throw error
+      		}
+      	shell.openExternal('file://' + pdfPath)
+      	event.sender.send('wrote-pdf', pdfPath)
+    	})
+  	})
+}	
+
 ipcMain.on('add-course', addCourse)
 ipcMain.on('get-course', getCourse)
 ipcMain.on('get-courses', getCourses)
@@ -128,3 +145,4 @@ ipcMain.on('add-student', addStudent)
 ipcMain.on('add-txn', addTxn)
 ipcMain.on('get-txns', getTxns)
 ipcMain.on('get-course-summary', getCourseSummary)
+ipcMain.on('print-to-pdf', printPDF)

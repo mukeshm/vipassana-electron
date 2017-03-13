@@ -22,6 +22,14 @@ export default class CourseSummary extends Component {
         })
     }
 
+    componentWillUnmount(){
+        ipcRenderer.removeAllListeners(['get-course-summary'])
+    }
+
+    printSummary(){
+        ipcRenderer.send('print-to-pdf')
+    }
+
     showSummary(){
         return this.state.sdtntTxnList.map(data => {
             return (<div className="cardBody" >
@@ -36,10 +44,10 @@ export default class CourseSummary extends Component {
     }
 
     render(){
-        console.log(this.state)
         return(<div className="container">
                     <div className="header">
                         <button className="buttons nav-buttons" onClick={() => hashHistory.goBack()} >Back</button>
+                        <button className="buttons add-button" onClick={() => this.printSummary()}> Print Summary </button>
                     </div>
                     <div className="pageContainer">
                         {this.showSummary()}
