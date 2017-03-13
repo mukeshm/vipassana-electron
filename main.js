@@ -1,8 +1,7 @@
-const {app, BrowserWindow, ipcMain, shell} = require('electron')
+const {app, BrowserWindow, ipcMain, dialog} = require('electron')
 const path = require('path')
 const url = require('url')
 const fs = require('fs')
-const os = require('os')
 const per = require('./persistance')
 
 let win
@@ -123,18 +122,21 @@ const getCourseSummary = function(event, arg){
 }
 
 const printPDF = function(event) {
-	const pdfPath = path.join(os.tmpdir(), 'print.pdf')
-  	const win = BrowserWindow.fromWebContents(event.sender)
-  	win.webContents.printToPDF({}, function (error, data) {
-    	if (error) throw error
-    	fs.writeFile(pdfPath, data, function (error) {
-      		if (error) {
-        		throw error
-      		}
-      	shell.openExternal('file://' + pdfPath)
-      	event.sender.send('wrote-pdf', pdfPath)
-    	})
-  	})
+    const dialogOptions = {
+	title: "Where to save PDF",
+	filters: [{name : 'pdf', extensions: ['pdf']}]
+    }
+    dialog.showSaveDialog(dialogOptions, function(filePath){
+	if(filePath){
+	    const wind = BrowserWindow.fromWebContents(event.sender)
+	    wind.webContents.printToPDF({}, function (error, data) {
+    		if (error) throw error
+    		fs.writeFile(filePath, data, function (error) {
+      		    if (error) throw error
+    		})
+	    })
+	}
+    })
 }	
 
 ipcMain.on('add-course', addCourse)
