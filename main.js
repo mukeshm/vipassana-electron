@@ -121,21 +121,33 @@ const getCourseSummary = function(event, arg){
     })
 }
 
+const showSaveDialog = function(dialogOptions,cb){
+    dialog.showSaveDialog(dialogOptions, function(filePath){
+	if(filePath) cb(filePath)
+    })
+}
+
+const writeToFile = function(filePath, data){
+    fs.writeFile(filePath, data, function (error) {
+	if (error) throw error
+    })
+}
+
+const generatePDF = function(win, options, cb){
+    const wind = BrowserWindow.fromWebContents(win)
+    wind.webContents.printToPDF(options, cb)
+}
+
 const printPDF = function(event) {
     const dialogOptions = {
 	title: "Where to save PDF",
 	filters: [{name : 'pdf', extensions: ['pdf']}]
     }
-    dialog.showSaveDialog(dialogOptions, function(filePath){
-	if(filePath){
-	    const wind = BrowserWindow.fromWebContents(event.sender)
-	    wind.webContents.printToPDF({}, function (error, data) {
-    		if (error) throw error
-    		fs.writeFile(filePath, data, function (error) {
-      		    if (error) throw error
-    		})
-	    })
-	}
+    showSaveDialog(dialogOptions,function(filePath){
+	generatePDF(event.sender, {}, function (error, data) {
+    	    if (error) throw error
+	    writeToFile(filePath, data)
+	})
     })
 }	
 
