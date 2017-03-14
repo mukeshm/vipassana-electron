@@ -1,6 +1,7 @@
-const {app, BrowserWindow, ipcMain} = require('electron')
+const {app, BrowserWindow, ipcMain, dialog} = require('electron')
 const path = require('path')
 const url = require('url')
+const fs = require('fs')
 const per = require('./persistance')
 
 let win
@@ -101,7 +102,7 @@ const addTxn = function(event, arg){
 }
 
 const getTxns = function(event, arg){
-    per.getTxns({studentID:arg}, function(err, docs){
+    per.getTxns({_id:arg}, function(err, docs){
 	if (err){
 	    console.log("Failed to get transactions for studentID : ", arg)
 	    console.log(err)
@@ -110,6 +111,45 @@ const getTxns = function(event, arg){
     })
 }
 
+const getCourseSummary = function(event, arg){
+    per.getCourseSummary({_id:arg}, function(err, docs){
+	if (err){
+	    console.log("Failed to get transaction summary for course : ", arg)
+	    console.log(err)
+	}
+	event.sender.send('get-course-summary', docs)
+    })
+}
+
+const showSaveDialog = function(dialogOptions,cb){
+    dialog.showSaveDialog(dialogOptions, function(filePath){
+	if(filePath) cb(filePath)
+    })
+}
+
+const writeToFile = function(filePath, data){
+    fs.writeFile(filePath, data, function (error) {
+	if (error) throw error
+    })
+}
+
+const generatePDF = function(win, options, cb){
+    const wind = BrowserWindow.fromWebContents(win)
+    wind.webContents.printToPDF(options, cb)
+}
+
+const printPDF = function(event) {
+    const dialogOptions = {
+	title: "Where to save PDF",
+	filters: [{name : 'pdf', extensions: ['pdf']}]
+    }
+    showSaveDialog(dialogOptions,function(filePath){
+	generatePDF(event.sender, {}, function (error, data) {
+    	    if (error) throw error
+	    writeToFile(filePath, data)
+	})
+    })
+}	
 
 ipcMain.on('add-course', addCourse)
 ipcMain.on('get-course', getCourse)
@@ -118,3 +158,5 @@ ipcMain.on('get-students', getStudents)
 ipcMain.on('add-student', addStudent)
 ipcMain.on('add-txn', addTxn)
 ipcMain.on('get-txns', getTxns)
+ipcMain.on('get-course-summary', getCourseSummary)
+ipcMain.on('print-to-pdf', printPDF)

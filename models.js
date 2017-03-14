@@ -1,5 +1,7 @@
 const connect  = require('camo').connect
-const Document = require('camo').Document;
+const Document = require('camo').Document
+const EmbeddedDocument = require('camo').EmbeddedDocument
+
 
 let database
 
@@ -33,14 +35,17 @@ class Student extends Document {
 	this.roomNo = String
 	this.seatNo = String
 	this.courseID = String
+	this.txns = {
+	    type: [Txn],
+	    default: []
+	}
     }
 }
 
-class Txn extends Document {
+class Txn extends EmbeddedDocument {
     constructor() {
 	super();
 
-	this.studentID = String
 	this.type = {
 	    type:String,
 	    choices : ['deposit', 'purchase', 'laundry']

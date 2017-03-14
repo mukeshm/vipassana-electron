@@ -9,6 +9,7 @@ import AddStudent from './components/AddStudent'
 import ViewStudent from './components/ViewStudent'
 import AddDeposit from './components/AddDeposit'
 import AddTranscation from './components/AddTransaction'
+import CourseSummary from './components/CourseSummary'
 
 export default class App extends Component {
     render(){
@@ -21,6 +22,7 @@ export default class App extends Component {
             <Route path='/viewstudent/:cid/:sid' component={ViewStudent} />
             <Route path='/adddeposit/:cid/:sobj' component={AddDeposit} />
             <Route path='/addtransaction/:cid/:sobj' component={AddTranscation} />
+            <Route path='/coursesummary/:cid' component={CourseSummary} />
         </Router>)
     }
 }

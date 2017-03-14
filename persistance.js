@@ -57,7 +57,6 @@ const getStudents = function(student, cb){
     })
 }
 
-
 const saveStudent = function(student, cb){
     let s = Student.create(student)
     s.save().then(function(doc){
@@ -67,18 +66,64 @@ const saveStudent = function(student, cb){
     })
 }
 
-const saveTxn = function(txn, cb){
-    let t = Txn.create(txn)
-    t.save().then(function(doc){
-	cb(null, doc._id)
+const addTxn = function(student, txn, cb){
+    student.txns.push(txn);
+    student.save().then(function(doc){
+	cb(null,student._id)
     }, function(err){
 	cb(err)
     })
 }
 
-const getTxns = function(txn, cb){
-    Txn.find(txn, {sort: '-date'}).then(function(docs){
-	cb(null, docs)
+const saveTxn = function(txn, cb){
+    let t = Txn.create(txn)
+    Student.findOne({_id: txn.studentID}).then(function(doc){
+	addTxn(doc, t, cb)
+    }, function(err){
+	cb(err)
+    })
+}
+
+const getTxns = function(student, cb){
+    Student.findOne(student).then(function(doc){
+	cb(null, doc.txns)
+    }, function(err){
+	cb(err)
+    })
+}
+
+const reduceTxns = function(acc, txn){
+    switch(txn.type){
+    case "deposit":
+	acc.deposit += txn.amount
+	break
+
+    case "laundry":
+	acc.laundry += txn.amount
+	break
+
+    case "purchase":
+	acc.purchase += txn.amount
+	break
+    }
+    return acc
+}
+
+const cleanStudent = function(student){
+
+    let monies = student.txns.reduce(reduceTxns, {deposit: 0,laundry: 0,purchase: 0})
+    return {
+	name : student.name,
+	roomNo : student.roomNo,
+	seatNo : student.seatNo,
+	monies : monies
+    }
+}
+
+const getCourseSummary = function(course, cb){
+    Student.find({courseID: course._id}, {sort: 'name'}).then(function(docs){
+	let sumDocs = docs.map(cleanStudent)
+	cb(null, sumDocs)
     }, function(err){
 	cb(err)
     })
@@ -92,5 +137,6 @@ module.exports = {
     getStudents,
     saveStudent,
     saveTxn,
-    getTxns
+    getTxns,
+    getCourseSummary
 }
