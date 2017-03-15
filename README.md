@@ -21,6 +21,13 @@ Run webpack
 npm run-script webpack
 ```
 
+Run tests 
+
+```bash
+npm test
+```
+
+
 Run app
 
 ```bash
