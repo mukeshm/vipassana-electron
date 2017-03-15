@@ -24,7 +24,14 @@ const createWindow = function() {
 }
 
 app.on('ready', function(){
-    per.init(function(err){
+
+    const uri = url.format({
+        pathname: path.join(__dirname, 'data.db'),
+        protocol: 'nedb:',
+        slashes: true
+    })
+
+    per.init(uri, function(err){
 	if(err){
 	    console.log("Error initializing persistance..")
 	    console.log(err)

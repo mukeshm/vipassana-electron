@@ -6,13 +6,7 @@ const Txn = models.Txn
 const path = require('path')
 const url = require('url')
 
-const uri = url.format({
-  pathname: path.join(__dirname, 'data.db'),
-  protocol: 'nedb:',
-  slashes: true
-})
-
-const init = function(cb){
+const init = function(uri, cb){
   models.init(uri, function(err){
 	  if(err){
 	    console.log("Models initialization failed")
