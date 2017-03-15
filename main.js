@@ -1,4 +1,4 @@
-const {app, BrowserWindow, ipcMain, dialog} = require('electron')
+const {app, BrowserWindow, ipcMain, dialog, shell} = require('electron')
 const path = require('path')
 const url = require('url')
 const fs = require('fs')
@@ -127,9 +127,10 @@ const showSaveDialog = function(dialogOptions,cb){
     })
 }
 
-const writeToFile = function(filePath, data){
+const writeToFile = function(filePath, data, cb){
     fs.writeFile(filePath, data, function (error) {
 	if (error) throw error
+	cb()
     })
 }
 
@@ -146,7 +147,9 @@ const printPDF = function(event) {
     showSaveDialog(dialogOptions,function(filePath){
 	generatePDF(event.sender, {}, function (error, data) {
     	    if (error) throw error
-	    writeToFile(filePath, data)
+	    writeToFile(filePath, data, function(){
+		shell.openExternal('file://' + filePath)
+	    })
 	})
     })
 }	
